@@ -17,13 +17,11 @@ export class PhoneListComponent {
   constructor(private phoneService: MobilePhoneService) {
   }
   addToUser(phone: MobilePhone) {
-    console.log("list");
     this.phoneService.addToUser(phone).subscribe(data => { this.onChanged.emit(); });
 
   }
 
   deleteFromUser(phoneId: number) {
-    console.log("list");
     this.phoneService.deleteFromUser(phoneId).subscribe(data => { this.onChanged.emit(); });
   }
 }
