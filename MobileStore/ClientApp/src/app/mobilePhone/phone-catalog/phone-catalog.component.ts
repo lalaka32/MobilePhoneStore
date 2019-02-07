@@ -21,8 +21,9 @@ export class PhoneCatalogComponent implements OnInit {
   }
 
   load() {
-    this.phoneService.getCatalog().subscribe((catalogData: MobilePhone[]) => {
-      this.viewModelPhones = this.mapMobilePhoneToViewModel(catalogData);
+    this.phoneService.getUserCatalog().subscribe((catalogData: MobilePhoneViewModel[]) => {
+      console.log(catalogData);
+      this.viewModelPhones = catalogData;
     });
   }
 

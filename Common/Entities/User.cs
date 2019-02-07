@@ -14,7 +14,7 @@ namespace Common.Entities
 
 		public string Password { get; set; }
 
-		public List<UserPhone> UserPhones { get; set; }
+		public virtual List<UserPhone> UserPhones { get; set; }
 
 		public User()
 		{

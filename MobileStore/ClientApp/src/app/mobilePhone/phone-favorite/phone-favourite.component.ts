@@ -36,9 +36,7 @@ export class PhoneFavoriteListComponent implements OnInit {
       let viewModel = new MobilePhoneViewModel(
         list[i]
       );
-      this.phoneService.isFavorite(list[i].id).subscribe((isFavourite: boolean) => {
-        viewModel.isFavourite = isFavourite;
-      });
+      viewModel.isFavourite = true;
       viewModels.push(viewModel);
     }
     return viewModels;

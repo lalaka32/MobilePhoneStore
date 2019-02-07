@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MobileStore.Authorization;
+using Newtonsoft.Json.Serialization;
 
 namespace MobileStore
 {
@@ -50,6 +51,14 @@ namespace MobileStore
 						};
 					});
 
+			services.AddMvc().AddJsonOptions(
+				o =>
+				{
+					o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+					o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+				}
+			);
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 			services.AddSpaStaticFiles(configuration =>
@@ -67,7 +76,7 @@ namespace MobileStore
 			else
 			{
 				app.UseExceptionHandler("/Error");
-				
+
 				app.UseHsts();
 			}
 

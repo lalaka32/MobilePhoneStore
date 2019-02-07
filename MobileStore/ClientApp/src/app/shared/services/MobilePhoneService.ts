@@ -15,6 +15,10 @@ export class MobilePhoneService {
     return this.http.get(this.url + "/Catalog");
   }
 
+  getUserCatalog() {
+    return this.http.get(this.url + "/UserCatalog");
+  }
+
   getPhone(id: number) {
     return this.http.get(this.url + "/" + id);
   }

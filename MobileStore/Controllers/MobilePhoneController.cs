@@ -75,9 +75,9 @@ namespace MobileStore.Controllers
 			try
 			{
 				id = User.Id();
-				foreach (var phone in _mobilePhoneRepository.GetUserPhones(id))
+				foreach (var phone in Catalog())
 				{
-					phonesModel.Add(new MobilePhoneViewModel() { Phone = phone,  IsFavourite = IsFavourite(phone.Id)});
+					phonesModel.Add(new MobilePhoneViewModel() { Phone = Get(phone.Id), IsFavourite = IsFavourite(phone.Id) });
 				}
 			}
 			catch (MissingFieldException e)

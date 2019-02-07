@@ -16,7 +16,7 @@ namespace Common.Entities
 
 		public double Price { get; set; }
 
-		public List<UserPhone> UserPhones { get; set; }
+		public virtual List<UserPhone> UserPhones { get; set; }
 
 		public MobilePhone()
 		{
