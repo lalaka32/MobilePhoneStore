@@ -1,0 +1,37 @@
+
+<dl class="dl-horizontal" *ngIf="phoneModel">
+  <dt>
+    Brand
+  </dt>
+
+  <dd>
+    {{ phoneModel?.phone.brand }}
+  </dd>
+
+  <dt>
+    Model
+  </dt>
+
+  <dd>
+    {{ phoneModel?.phone.modelName }}
+  </dd>
+
+  <dt>
+    Price
+  </dt>
+
+  <dd>
+    {{ phoneModel?.phone.price }}
+  </dd>
+</dl>
+<p>
+  <button *ngIf="!phoneModel?.isFavourite" (click)="addToUser(phoneModel?.phone)" type="button" class="btn btn-primary">
+    Add to favorite
+  </button>
+  <button *ngIf="phoneModel?.isFavourite" (click)="deleteFromUser(phoneModel?.phone.id)" type="button" class="btn btn-primary">
+    Delete from favorite
+  </button>
+
+  <a routerLink="/catalog" class="nav-link">Back to catalog</a>
+
+</p>

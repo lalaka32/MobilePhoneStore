@@ -1,0 +1,33 @@
+
+
+<table class='table table-responsive-sm' *ngIf="phones">
+  <thead>
+    <tr>
+      <td>Brand</td>
+      <td>Model name</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let phoneModel of phones">
+      <tr>
+        <td>{{ phoneModel?.phone.brand }}</td>
+        <td>{{ phoneModel?.phone.modelName }}</td>
+        <td>
+          <a [routerLink]="['/info', phoneModel.phone.id]" class="btn btn-primary">More info</a>
+        </td>
+        <td>
+          <button *ngIf="!phoneModel?.isFavourite" (click)="addToUser(phoneModel?.phone)" type="button" class="btn btn-default">
+            Add to favorite
+          </button>
+          <button *ngIf="phoneModel?.isFavourite" (click)="deleteFromUser(phoneModel?.phone.id)" type="button" class="btn btn-default">
+            Delete from favorite
+          </button>
+        </td>
+
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+

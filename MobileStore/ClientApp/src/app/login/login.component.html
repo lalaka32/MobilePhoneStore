@@ -1,0 +1,24 @@
+<section id="loginHeader">
+  <h2>Login</h2>
+  Or <a [routerLink]='["/registration"]' class="btn btn-primary">Registration</a>
+</section>
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <div class="form-group">
+    <label for="login">Login</label>
+    <input type="text" formControlName="login" class="form-control" [ngClass]="{ 'is-invalid': submitted && formData.login.errors }" />
+    <div *ngIf="submitted && formData.login.errors" class="invalid-feedback">
+      <div *ngIf="formData.login.errors.required">Login is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && formData.password.errors }" />
+    <div *ngIf="submitted && formData.password.errors" class="invalid-feedback">
+      <div *ngIf="formData.password.errors.required">Password is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button [disabled]="submitClick" class="btn btn-primary">Login</button>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+</form>
