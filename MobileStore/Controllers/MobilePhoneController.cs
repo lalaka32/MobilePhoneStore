@@ -5,6 +5,7 @@ using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobileStore.Authorization.AuthExtantions;
+using MobileStore.Models.MobilePhoneModels;
 
 namespace MobileStore.Controllers
 {
@@ -39,7 +40,7 @@ namespace MobileStore.Controllers
 			{
 				return null;
 			}
-			
+
 			return phone;
 		}
 
@@ -58,11 +59,36 @@ namespace MobileStore.Controllers
 			{
 				return null;
 			}
-			catch(InvalidOperationException e)
+			catch (InvalidOperationException e)
 			{
 				return null;
 			}
 			return phone;
+		}
+
+		[Authorize]
+		[HttpGet("[action]")]
+		public IEnumerable<MobilePhoneViewModel> UserCatalog()
+		{
+			int id = 0;
+			List<MobilePhoneViewModel> phonesModel = new List<MobilePhoneViewModel>();
+			try
+			{
+				id = User.Id();
+				foreach (var phone in _mobilePhoneRepository.GetUserPhones(id))
+				{
+					phonesModel.Add(new MobilePhoneViewModel() { Phone = phone,  IsFavourite = IsFavourite(phone.Id)});
+				}
+			}
+			catch (MissingFieldException e)
+			{
+				return null;
+			}
+			catch (InvalidOperationException e)
+			{
+				return null;
+			}
+			return phonesModel;
 		}
 
 		[Authorize]

@@ -10,6 +10,6 @@ namespace MobileStore.Models.MobilePhoneModels
     {
 		public MobilePhone Phone{ get; set; }
 
-		public bool IsFavorite { get; set; }
+		public bool IsFavourite { get; set; }
 	}
 }
