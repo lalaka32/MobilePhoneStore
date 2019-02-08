@@ -1,12 +1,7 @@
-﻿using Common.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Common.Entities;
 
-namespace DAL
+namespace DBServices
 {
 	public class StoreContext : DbContext
 	{
@@ -30,8 +25,6 @@ namespace DAL
 				.HasOne(sc => sc.Phone)
 				.WithMany(c => c.UserPhones)
 				.HasForeignKey(sc => sc.PhoneId);
-
-			
 
 			base.OnModelCreating(modelBuilder);
 		}

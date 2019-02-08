@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Common.Entities;
-using DAL.Repositories.Interfaces;
+using DBServices.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MobileStore.Authorization;
@@ -22,10 +18,10 @@ namespace MobileStore.Controllers
 		private const string LoginNotCorrectErrorMessage = "No users with this login";
 		private const string PasswordErrorMessgae = "Wrong password";
 
-		IUserRepository _userRepository;
-		public AuthController(IUserRepository userRepository)
+		IUserStore _userStore;
+		public AuthController(IUserStore userStore)
 		{
-			_userRepository = userRepository;
+			_userStore = userStore;
 		}
 
 		[AllowAnonymous]
@@ -33,14 +29,14 @@ namespace MobileStore.Controllers
 		public IActionResult Register([FromBody]User userToRegistry)
 		{
 			IActionResult response = BadRequest();
-			User user = _userRepository.GetUserByLogin(userToRegistry.Login);
+			User user = _userStore.GetUserByLogin(userToRegistry.Login);
 			if (user != null)
 			{
 				return BadRequest(new { error = LoginTakenErrorMessage });
 			}
-			_userRepository.Create(userToRegistry);
+			_userStore.AddUser(userToRegistry);
 
-			var tokenString = GenerateJSONWebToken(_userRepository.GetUserByLogin(userToRegistry.Login));
+			var tokenString = GenerateJSONWebToken(_userStore.GetUserByLogin(userToRegistry.Login));
 			response = Ok(new { token = tokenString });
 
 
@@ -52,7 +48,7 @@ namespace MobileStore.Controllers
 		public IActionResult Login([FromBody]User login)
 		{
 			IActionResult response = Unauthorized();
-			var user = _userRepository.GetUserByLogin(login.Login);
+			var user = _userStore.GetUserByLogin(login.Login);
 			if (user == null)
 			{
 				return Unauthorized(new { error = LoginNotCorrectErrorMessage });

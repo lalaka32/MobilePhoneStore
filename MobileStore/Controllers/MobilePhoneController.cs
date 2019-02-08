@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Entities;
-using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobileStore.Authorization.AuthExtantions;
-using MobileStore.Models.MobilePhoneModels;
+using DBServices.Interfaces;
+using Common.DTO;
 
 namespace MobileStore.Controllers
 {
@@ -13,28 +12,42 @@ namespace MobileStore.Controllers
 	[ApiController]
 	public class MobilePhoneController : ControllerBase
 	{
-		IMobilePhoneRepository _mobilePhoneRepository;
-		IUserRepository _userRepository;
 
-		public MobilePhoneController(IMobilePhoneRepository mobilePhoneRepository, IUserRepository userRepository)
+		IPhonesStore _phonesStore;
+
+		public MobilePhoneController(IPhonesStore phonesStore)
 		{
-			_mobilePhoneRepository = mobilePhoneRepository;
-			_userRepository = userRepository;
+			_phonesStore = phonesStore;
 		}
 
 		[HttpGet("[action]")]
-		public IEnumerable<MobilePhone> Catalog()
+		public IEnumerable<PhoneDTO> Catalog()
 		{
-			return _mobilePhoneRepository.List();
+			IEnumerable<PhoneDTO> catalog = null;
+			try
+			{
+				var userId = User.Id();
+				catalog = _phonesStore.Catalog(userId);
+			}
+			catch (MissingFieldException e)
+			{
+				return null;
+			}
+			catch (InvalidOperationException e)
+			{
+				return null;
+			}
+			return catalog;
 		}
 
 		[HttpGet("{id}")]
-		public MobilePhone Get(int id)
+		public PhoneDTO Get(int id)
 		{
-			MobilePhone phone = null;
+			PhoneDTO phone = null;
 			try
 			{
-				phone = _mobilePhoneRepository.Read(id);
+				var userId = User.Id();
+				phone = _phonesStore.GetPhoneDTO(id, userId);
 			}
 			catch (InvalidOperationException e)
 			{
@@ -45,84 +58,14 @@ namespace MobileStore.Controllers
 		}
 
 		[Authorize]
-		[HttpGet("[action]")]
-		public IEnumerable<MobilePhone> UserFavourite()
-		{
-			int id = 0;
-			IEnumerable<MobilePhone> phone = null;
-			try
-			{
-				id = User.Id();
-				phone = _mobilePhoneRepository.GetUserPhones(id);
-			}
-			catch (MissingFieldException e)
-			{
-				return null;
-			}
-			catch (InvalidOperationException e)
-			{
-				return null;
-			}
-			return phone;
-		}
-
-		[Authorize]
-		[HttpGet("[action]")]
-		public IEnumerable<MobilePhoneViewModel> UserCatalog()
-		{
-			int id = 0;
-			List<MobilePhoneViewModel> phonesModel = new List<MobilePhoneViewModel>();
-			try
-			{
-				id = User.Id();
-				foreach (var phone in Catalog())
-				{
-					phonesModel.Add(new MobilePhoneViewModel() { Phone = Get(phone.Id), IsFavourite = IsFavourite(phone.Id) });
-				}
-			}
-			catch (MissingFieldException e)
-			{
-				return null;
-			}
-			catch (InvalidOperationException e)
-			{
-				return null;
-			}
-			return phonesModel;
-		}
-
-		[Authorize]
 		[HttpGet("[action]/{phoneId}")]
-		public bool IsFavourite(int phoneId)
+		public ActionResult MarkAsFavourite(int phoneId)
 		{
-			int id = 0;
-			bool isFavorite = false;
+			int userId = 0;
 			try
 			{
-				id = User.Id();
-				isFavorite = _mobilePhoneRepository.PhoneIsFavourite(id, phoneId);
-			}
-			catch (MissingFieldException e)
-			{
-				return false;
-			}
-			catch (InvalidOperationException e)
-			{
-				return false;
-			}
-			return isFavorite;
-		}
-
-		[Authorize]
-		[HttpGet("[action]/{phoneId}")]
-		public ActionResult AddPhoneToUser(int phoneId)
-		{
-			int id = 0;
-			MobilePhone phoneFromRepository = null;
-			try
-			{
-				id = User.Id();
-				phoneFromRepository = _mobilePhoneRepository.Read(phoneId);
+				userId = User.Id();
+				_phonesStore.MarkAsFavourite(phoneId, userId);
 			}
 			catch (MissingFieldException e)
 			{
@@ -132,31 +75,28 @@ namespace MobileStore.Controllers
 			{
 				return BadRequest();
 			}
-			_mobilePhoneRepository.AddPhoneToUser(id, phoneFromRepository);
 
 			return Ok();
 		}
 
 		[Authorize]
 		[HttpDelete("[action]/{phoneId}")]
-		public ActionResult DeletePhoneUser(int phoneId)
+		public ActionResult DeleteFromFavourite(int phoneId)
 		{
-			int id = 0;
-			MobilePhone phone = null;
+			int userId = 0;
 			try
 			{
-				id = User.Id();
-				phone = _mobilePhoneRepository.Read(phoneId);
+				userId = User.Id();
+				_phonesStore.DeleteFromFavourite(phoneId, userId);
 			}
 			catch (MissingFieldException e)
 			{
-				return BadRequest(new { error = "UserId problem" });
+				return BadRequest();
 			}
 			catch (InvalidOperationException e)
 			{
-				return BadRequest(new { error = "phoneId problem" });
+				return BadRequest();
 			}
-			_mobilePhoneRepository.DeletePhoneFromUser(id, phone);
 
 			return Ok();
 		}
