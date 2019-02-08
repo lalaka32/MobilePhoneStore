@@ -13,7 +13,7 @@ export class NavMenuComponent {
     _subscription: any;
 
   constructor(private authorizationCheckService: AuthorizationCheck, private authService: AuthenticationService) {
-    this.isAuthorized = authorizationCheckService.isAuthrize;
+    this.isAuthorized = authorizationCheckService.hasToken();
     this._subscription = authorizationCheckService.boolChanged.subscribe((value) => {
       this.isAuthorized = value;
     });

@@ -12,7 +12,7 @@ export class AuthorizationCheck implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (localStorage.getItem('TokenInfo')) {
+    if (this.hasToken()) {
       this.isAuthrize = true;
     }
     else {
@@ -23,5 +23,8 @@ export class AuthorizationCheck implements CanActivate {
    
     this.boolChanged.next(this.isAuthrize);
     return this.isAuthrize;
+  }
+  hasToken() {
+    return localStorage.getItem('TokenInfo') != null;
   }
 }

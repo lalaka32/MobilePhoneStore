@@ -29,16 +29,4 @@ export class PhoneCatalogComponent implements OnInit {
   onChanged() {
     this.load();
   }
-
-  mapMobilePhoneToViewModel(list: MobilePhone[]) {
-    let viewModels = new Array<MobilePhoneViewModel>();
-    for (var i = 0; i < list.length; i++) {
-      let viewModel = new MobilePhoneViewModel(list[i]);
-      this.phoneService.isFavorite(list[i].id).subscribe((isFavourite: boolean) => {
-        viewModel.isFavourite = isFavourite;
-      });
-      viewModels.push(viewModel);
-    }
-    return viewModels;
-  }
 }
