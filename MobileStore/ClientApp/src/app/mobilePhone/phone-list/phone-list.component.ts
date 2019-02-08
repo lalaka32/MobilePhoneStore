@@ -17,7 +17,7 @@ export class PhoneListComponent {
   constructor(private phoneService: MobilePhoneService) {
   }
   addToUser(phone: MobilePhone) {
-    this.phoneService.addToUser(phone).subscribe(data => { this.onChanged.emit(); });
+    this.phoneService.addToUser(phone.id).subscribe(data => { this.onChanged.emit(); });
 
   }
 

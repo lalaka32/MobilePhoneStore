@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { MobilePhone } from '../entities/MobilePhone';
+import { RequestOptions } from '@angular/http';
 
 @Injectable()
 export class MobilePhoneService {
@@ -31,9 +32,8 @@ export class MobilePhoneService {
     return this.http.get(this.url + "/IsFavourite/" + id);
   }
 
-  addToUser(phoneModel: MobilePhone) {
-    let id = phoneModel.id;
-    return this.http.get<any>(this.url + '/AddPhoneToUser/' + id);
+  addToUser(phoneId: number) {
+    return this.http.get(this.url + '/AddPhoneToUser/' + phoneId);
   }
 
   deleteFromUser(phoneId: number) {

@@ -28,7 +28,7 @@ export class PhoneInfoComponent implements OnInit {
   }
 
   addToUser(phone: MobilePhone) {
-    this.phoneService.addToUser(phone).subscribe(data => { this.load(); });
+    this.phoneService.addToUser(phone.id).subscribe(data => { this.load(); });
   }
 
   deleteFromUser(phoneId: number) {
