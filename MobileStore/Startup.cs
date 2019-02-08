@@ -1,6 +1,4 @@
-using DAL;
-using DAL.Repositories.Implementations;
-using DAL.Repositories.Interfaces;
+using DBServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MobileStore.Authorization;
 using Newtonsoft.Json.Serialization;
+using DBServices.Interfaces;
+using DBServices.Implementations;
 
 namespace MobileStore
 {
@@ -30,8 +30,9 @@ namespace MobileStore
 			string connectionString = Configuration.GetConnectionString("DefaultConnection");
 			services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
-			services.AddTransient<IUserRepository, UserRepository>();
-			services.AddTransient<IMobilePhoneRepository, MobilePhoneRepository>();
+			services.AddTransient<IUserStore, UserStore>();
+			services.AddTransient<IPhonesStore, PhonesStore>();
+			
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\PhoneDTO.cs" />
     <Compile Include="Entities\MobilePhone.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserPhone.cs" />

@@ -28,21 +28,18 @@ export class PhoneInfoComponent implements OnInit {
   }
 
   addToUser(phone: MobilePhone) {
-    this.phoneService.addToUser(phone.id).subscribe(data => { this.load(); });
+    this.phoneService.MarkAsFavourite(phone.id).subscribe(data => { this.load(); });
   }
 
   deleteFromUser(phoneId: number) {
-    this.phoneService.deleteFromUser(phoneId).subscribe(data => { this.load(); });
+    this.phoneService.DeleteFromFavourite(phoneId).subscribe(data => { this.load(); });
   }
 
   load() {
     if (this.id)
-      this.phoneService.getPhone(this.id)
-        .subscribe((phoneData: MobilePhone) => {
-          this.phoneModel = new MobilePhoneViewModel(phoneData);
-          this.phoneService.isFavorite(this.id).subscribe((isFavourite: boolean) => {
-            this.phoneModel.isFavourite = isFavourite;
-          });
+      this.phoneService.GetPhoneDTO(this.id)
+        .subscribe((phoneData: MobilePhoneViewModel) => {
+          this.phoneModel = phoneData;
           if (this.phoneModel != null) this.loaded = true;
         });
   }

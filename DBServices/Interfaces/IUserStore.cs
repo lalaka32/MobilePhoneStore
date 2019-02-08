@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories.Interfaces
+namespace DBServices.Interfaces
 {
-	public interface IUserRepository : IRepository<User>
+	public interface IUserStore
 	{
 		User GetUserByLogin(string login);
+		void AddUser(User user);
 	}
 }
