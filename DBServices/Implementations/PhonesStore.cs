@@ -67,7 +67,7 @@ namespace DBServices.Implementations
 				IsFavourite = phone.UserPhones.Any(up => up.UserId == userId)
 			}).ToList();
 			return phonesDTO;
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		public void DeleteFromFavourite(int phoneId, int userId)
@@ -82,7 +82,7 @@ namespace DBServices.Implementations
 				.Single(up => up.PhoneId == phoneId && up.UserId == userId));
 
 			storeContext.SaveChanges();
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		public PhoneDTO GetPhoneDTO(int phoneId, int userId)
@@ -93,7 +93,7 @@ namespace DBServices.Implementations
 				IsFavourite = phone.UserPhones.Any(up => up.UserId == userId)
 			}).Single(pDTO=> pDTO.Phone.Id == phoneId);
 			return phoneDTO;
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		public void MarkAsFavourite(int phoneId, int userId)
@@ -104,7 +104,7 @@ namespace DBServices.Implementations
 				.UserPhones.Add(new UserPhone() { PhoneId = phoneId, UserId = userId });
 
 			storeContext.SaveChanges();
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 	}
 }

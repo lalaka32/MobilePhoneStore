@@ -12,31 +12,19 @@ export class MobilePhoneService {
   constructor(private http: HttpClient) {
   }
 
-  getCatalog() {
+  Catalog() {
     return this.http.get(this.url + "/Catalog");
   }
 
-  getUserCatalog() {
-    return this.http.get(this.url + "/UserCatalog");
-  }
-
-  getPhone(id: number) {
+  GetPhoneDTO(id: number) {
     return this.http.get(this.url + "/" + id);
   }
 
-  getUserFavourite() {
-    return this.http.get(this.url + "/UserFavourite");
+  MarkAsFavourite(phoneId: number) {
+    return this.http.get(this.url + '/MarkAsFavourite/' + phoneId);
   }
 
-  isFavorite(id: number) {
-    return this.http.get(this.url + "/IsFavourite/" + id);
-  }
-
-  addToUser(phoneId: number) {
-    return this.http.get(this.url + '/AddPhoneToUser/' + phoneId);
-  }
-
-  deleteFromUser(phoneId: number) {
-    return this.http.delete(this.url + '/DeletePhoneUser/' + phoneId);
+  DeleteFromFavourite(phoneId: number) {
+    return this.http.delete(this.url + '/DeleteFromFavourite/' + phoneId);
   }
 }

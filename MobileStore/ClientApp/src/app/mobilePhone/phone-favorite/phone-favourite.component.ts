@@ -21,24 +21,12 @@ export class PhoneFavoriteListComponent implements OnInit {
   }
 
   load() {
-    this.phoneService.getUserFavourite().subscribe((catalogData: MobilePhone[]) => {
-      this.viewModelPhones = this.mapMobilePhoneToViewModel(catalogData);
+    this.phoneService.Catalog().subscribe((catalogData: MobilePhoneViewModel[]) => {
+      this.viewModelPhones = catalogData.filter(x => x.isFavourite == true);
     });
   }
 
   onChanged() {
     this.load();
-  }
-
-  mapMobilePhoneToViewModel(list: MobilePhone[]) {
-    let viewModels = new Array<MobilePhoneViewModel>();
-    for (var i = 0; i < list.length; i++) {
-      let viewModel = new MobilePhoneViewModel(
-        list[i]
-      );
-      viewModel.isFavourite = true;
-      viewModels.push(viewModel);
-    }
-    return viewModels;
   }
 }
